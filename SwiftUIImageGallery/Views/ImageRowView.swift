@@ -15,33 +15,30 @@ struct ImageRowView: View {
     
     private let title: String
     private let subtitle: String
-    private let placeholder: Image = Image(systemName: "photo")
     
     var body: some View {
         HStack {
             Image(uiImage: viewModel.image ?? UIImage())
                 .resizable()
                 .clipShape(Rectangle())
-                .overlay(Rectangle().stroke(Color.white, lineWidth: 1.0))
                 .frame(width: 200, height: 200)
             
             VStack {
                 Text("\(title)")
                     .bold()
-                    .foregroundColor(Color.black)
                     .padding()
                 Text("\(subtitle)")
                     .italic()
-                    .foregroundColor(Color.black)
             }
             .font(.headline)
             .foregroundColor(Color.white)
-            .frame(minWidth: 130)
+            .frame(minWidth: 100)
             
             Spacer()
             
-            
         }
+        .background(Color.black)
+        .cornerRadius(5.0)
         .padding(.all)
         .onAppear(perform: viewModel.load)
         .onDisappear(perform: viewModel.cancel)

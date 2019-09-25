@@ -11,15 +11,22 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var viewModel: ContentViewModel
+    @State private var scaleValue: CGFloat = 1
     
     var body: some View {
         NavigationView {
-            List(viewModel.images) { image in
-                NavigationLink(destination: ImageDetailView(viewModel: .init(imageData: image))) {
-                    ImageRowView(name: image.name, filename: image.image)
+            VStack{
+                Slider(value: $scaleValue, in: 0...1, step: 0.1)
+                    .accentColor(Color.black)
+                List(viewModel.images) { image in
+                    NavigationLink(destination: ImageDetailView(viewModel: .init(imageData: image))) {
+                        ImageRowView(name: image.name, filename: image.image)
+                    }
+                    .scaleEffect(self.scaleValue)
                 }
+                .navigationBarTitle("Image Gallery")
+            
             }
-            .navigationBarTitle("Image Gallery")
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .onAppear(perform: viewModel.load)
