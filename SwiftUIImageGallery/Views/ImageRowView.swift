@@ -13,40 +13,40 @@ struct ImageRowView: View {
     
     @ObservedObject private var viewModel: ImageRowViewModel
     
-    private let title: String
-    private let subtitle: String
+    private let imageData: ImageData
     
     var body: some View {
-        HStack {
-            Image(uiImage: viewModel.image ?? UIImage())
-                .resizable()
-                .clipShape(Rectangle())
-                .frame(width: 200, height: 200)
-            
-            VStack {
-                Text("\(title)")
-                    .bold()
-                    .padding()
-                Text("\(subtitle)")
-                    .italic()
+        NavigationLink(destination: ImageDetailView(imageData: self.imageData, image: viewModel.image ?? UIImage())) {
+            HStack {
+                Image(uiImage: viewModel.image ?? UIImage())
+                    .resizable()
+                    .clipShape(Rectangle())
+                    .frame(width: 200, height: 200)
+                
+                VStack {
+                    Text("\(self.imageData.name)")
+                        .bold()
+                        .padding()
+                    Text("\(self.imageData.image)")
+                        .italic()
+                }
+                .font(.headline)
+                .foregroundColor(Color.white)
+                .frame(minWidth: 100)
+                
+                Spacer()
+                
             }
-            .font(.headline)
-            .foregroundColor(Color.white)
-            .frame(minWidth: 100)
-            
-            Spacer()
-            
+            .background(Color.black)
+            .cornerRadius(5.0)
+            .padding(.all)
+            .onAppear(perform: viewModel.load)
+            .onDisappear(perform: viewModel.cancel)
         }
-        .background(Color.black)
-        .cornerRadius(5.0)
-        .padding(.all)
-        .onAppear(perform: viewModel.load)
-        .onDisappear(perform: viewModel.cancel)
     }
     
-    init(name: String, filename: String) {
-        self.viewModel = ImageRowViewModel(name: filename)
-        self.title = name
-        self.subtitle = filename
+    init(imageData: ImageData) {
+        self.viewModel = ImageRowViewModel(name: imageData.image)
+        self.imageData = imageData
     }
 }

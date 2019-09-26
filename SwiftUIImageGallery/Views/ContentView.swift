@@ -19,9 +19,7 @@ struct ContentView: View {
                 Slider(value: $scaleValue, in: 0...1, step: 0.1)
                     .accentColor(Color.black)
                 List(viewModel.images) { image in
-                    NavigationLink(destination: ImageDetailView(viewModel: .init(imageData: image))) {
-                        ImageRowView(name: image.name, filename: image.image)
-                    }
+                    ImageRowView(imageData: image)
                     .scaleEffect(self.scaleValue)
                 }
                 .navigationBarTitle("Image Gallery")
